@@ -9,6 +9,7 @@ use Test::Fatal;
 
   has one => (is => 'rw');
   has two => (is => 'rw', lazy_required => 1);
+  has [ 'three', 'four' ] => (is => 'rw', lazy_required => 1);
 }
 
 {
@@ -18,6 +19,7 @@ use Test::Fatal;
 
   has one => (is => 'rw');
   has two => (is => 'rw', lazy_required => 1);
+  has [ 'three', 'four' ] => (is => 'rw', lazy_required => 1);
 }
 
 {
@@ -40,10 +42,26 @@ sub test_object {
 
   like exception {
     $o->two;
-  }, qr/must be provided before calling reader/, "accessor fails if not provided a value";
+  }, qr/Attribute 'two' must be provided before calling reader/,
+    "accessor fails if not provided a value";
 
   is exception {
     $o->two(1);
     $o->two;
   }, undef, "accessor works if provided a value";
+
+  is exception {
+    $o->two(1);
+    $o->two;
+  }, undef, "accessor works if provided a value";
+
+  like exception {
+    $o->three;
+  }, qr/Attribute 'three' must be provided before calling reader/,
+    "error is correct for has with multiple attributes";
+
+  like exception {
+    $o->four;
+  }, qr/Attribute 'four' must be provided before calling reader/,
+    " ... for both attributes";
 }

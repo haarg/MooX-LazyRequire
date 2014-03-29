@@ -14,22 +14,30 @@ sub import {
 
   install_modifier $target, 'around', 'has', sub {
     my $orig = shift;
-    my ($attr, %opts) = @_;
+    my ($attrs, %opts) = @_;
+    my @attrs = ref $attrs ? @$attrs : $attrs;
     if ($opts{lazy_required}) {
       if (exists $opts{lazy} && !$opts{lazy}) {
         croak "LazyRequire can't be used with lazy => 0";
       }
       elsif (exists $opts{default} || exists $opts{builder}) {
-        croak "You may not use both a builder or a default and lazy_required for one attribute ($attr)";
+        croak "You may not use both a builder or a default and lazy_required for one attribute ("
+          . (join ', ', @attrs) . ")";
       }
       $opts{lazy} = 1;
-      $opts{default} = quote_sub qq{
-        Carp::croak("Attribute '\Q$attr\E' must be provided before calling reader");
-      };
-
+      for my $attr (@attrs) {
+        my $opts = {
+          default => quote_sub(qq{
+            Carp::croak("Attribute '\Q$attr\E' must be provided before calling reader");
+          }),
+          %opts,
+        };
+        $orig->($attr, %$opts);
+      }
     }
-
-    $orig->($attr, %opts);
+    else {
+      $orig->($attrs, %opts);
+    }
   }
 }
 
