@@ -19,6 +19,7 @@ my %META = (
         'Carp'                      => 0,
         'Sub::Quote'                => 0,
         'Class::Method::Modifiers'  => 0,
+        'perl'                      => 5.006,
       },
     },
     develop   => {
