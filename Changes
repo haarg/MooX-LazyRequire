@@ -1,4 +1,7 @@
 Release history for MooX::LazyRequire
 
+  - specify perl prerequisite in metadata
+  - fix handling of multiple attributes in one has statement
+
 0.001000 - 2014-03-16
   - initial release
