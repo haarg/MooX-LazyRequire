@@ -2,7 +2,7 @@ package MooX::LazyRequire;
 use strict;
 use warnings;
 
-our $VERSION = '0.001001';
+our $VERSION = '0.001002';
 $VERSION = eval $VERSION;
 
 use Carp;
