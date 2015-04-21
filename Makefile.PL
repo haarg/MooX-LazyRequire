@@ -20,6 +20,7 @@ my %META = (
         'Sub::Quote'                => 0,
         'Class::Method::Modifiers'  => 0,
         'perl'                      => 5.006,
+        'Moo'                       => 0,
       },
     },
     develop   => {
